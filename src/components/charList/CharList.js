@@ -1,11 +1,11 @@
-import './charList.scss';
 import PropTypes from 'prop-types';
 
 import {useState, useEffect, useRef} from 'react';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-
 import useMarvelService from '../../services/MarvelService';
+
+import './charList.scss';
 
 const CharList = (props) => {
 
@@ -23,18 +23,18 @@ const CharList = (props) => {
     const onRequest = (offset, initial) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset)
-            .then(onCharLoaded)
+            .then(onCharListLoaded)
     }
 
-    const onCharLoaded = (newCharList) => {
+    const onCharListLoaded = (newCharList) => {
         let ended = false;
         if(newCharList.length < 9) {
             ended = true;
         }
-        setCharList(charList => [...charList, ...newCharList]);
-        setNewItemLoading(newItemLoading => false);
-        setOffset(offset => offset + 9);
-        setCharEnded(charEnded => ended);
+        setCharList([...charList, ...newCharList]);
+        setNewItemLoading(false);
+        setOffset(offset + 9);
+        setCharEnded(ended);
     }
 
     const itemRefs = useRef([]);
@@ -47,14 +47,13 @@ const CharList = (props) => {
 
     function renderItems(arr) {
         const items = arr.map((item, i) => {
-        
-            let classNotImage = (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') ? {"objectFit": 'unset'}: null;
+        let classNotImage = (item.thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') ? {"objectFit": 'unset'}: null;
 
         return (
             <li
                 className="char__item"
                 ref={el => itemRefs.current[i] = el}
-                key={item.id}
+                key={i}
                 tabIndex={0}
                 onClick={() => {
                     props.onCharSelected(item.id); 
