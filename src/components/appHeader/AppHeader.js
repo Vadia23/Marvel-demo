@@ -1,34 +1,24 @@
 import './appHeader.scss';
-import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const AppHeader = (props) => {
-
-    const {isComics, setIsComics} = props;
-
-    const onComics = () => {
-        setIsComics(true)
-        console.log('comics')
-    }
-    const onCharacters = () => {
-        setIsComics(false);
-        console.log('not Comics');
-    }
-
-    const style = {'color': '#9F0013'};
-
     return (
         <header className="app__header">
             <h1 className="app__title">
-                <a href="#"
-                onClick={onCharacters} >
+                <NavLink to="/">
                     <span>Marvel</span> information portal
-                </a>
+                </NavLink>
             </h1>
             <nav className="app__menu">
                 <ul>
-                    <li onClick={onCharacters} style={isComics ? null : style} ><a href="#" >Characters</a></li>
+                    <li><NavLink 
+                        end 
+                        to="/" 
+                        style={({isActive}) => ({color: isActive ? '#9F0013' : 'inherit'})} >Characters</NavLink></li>
                     /
-                    <li onClick={onComics} style={isComics ? style : null} ><a href="#" >Comics</a></li>
+                    <li><NavLink  
+                        to="/comics" 
+                        style={({isActive}) => ({color: isActive ? '#9F0013' : 'inherit'})} >Comics</NavLink></li>
                 </ul>
             </nav>
         </header>
